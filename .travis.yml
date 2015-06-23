@@ -7,4 +7,4 @@ before_install:
   - wget https://gist.githubusercontent.com/ahoarau/bcb9a6966d2a1d82d88a/raw/f7967cbfc01bd9825fae509463177a0b31d0934e/super_install.sh
 
 script:
-  - bash super_install.bash
+  - bash lwr_setup.bash
