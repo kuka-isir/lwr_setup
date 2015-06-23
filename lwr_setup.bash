@@ -1,8 +1,8 @@
 #!/usr/bin bash
 
 echo 'Upgrades'
-sudo apt-get update
-sudo apt-get -y upgrade
+#sudo apt-get update
+#sudo apt-get -y upgrade
 #sudo apt-get -y dist-upgrade
 
 echo 'OpenSSH'
