@@ -61,10 +61,10 @@ rosdep update
 
 # OROCOS
 
-toolchain-version=2.8
-if [ $ROS_DISTRO == "hydro" ]; then toolchain-version=2.7 ;fi
-if [ $ROS_DISTRO == "indigo" ]; then toolchain-version=2.8 ;fi
-if [ $ROS_DISTRO == "jade" ]; then toolchain-version=2.8 ;fi
+toolchain_version=2.8
+if [ $ROS_DISTRO == "hydro" ]; then toolchain_version=2.7 ;fi
+if [ $ROS_DISTRO == "indigo" ]; then toolchain_version=2.8 ;fi
+if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.8 ;fi
 
 
 sudo apt-get install -y ros-$ROS_DISTRO-metaruby
@@ -74,9 +74,9 @@ cd ~/isolated_ws
 
 rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
 
-git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain-version src/orocos/orocos_toolchain
+git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain_version src/orocos/orocos_toolchain
 ## Get the very latest updates (might be unstable)
-git submodule foreach git checkout toolchain-$toolchain-version
+git submodule foreach git checkout toolchain-$toolchain_version
 
 # RUBY WORKAROUND
 sudo apt-get install -y ruby-configurate
@@ -120,4 +120,5 @@ sudo pip install cpp-coveralls --use-mirrors
 
 
 catkin_make -DCATKIN_ENABLE_TESTING=OFF
+echo 'source /home/$USER/catkin_ws/devel/setup.bash' >> ~/.bashrc
 source ~/.bashrc
