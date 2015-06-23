@@ -48,7 +48,13 @@ if [ $(lsb_release -cs) == "vivid" ]; then ROS_DISTRO=jade ;fi
 sudo sh -c "echo 'deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main' > /etc/apt/sources.list.d/ros-latest.list"
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt-get update
-sudo apt-get -y install ros-$ROS_DISTRO-desktop-full ros-$ROS_DISTRO-moveit-* ros-$ROS_DISTRO-ros-control* ros-$ROS_DISTRO-control* python-rosinstall python-pip ros-$ROS_DISTRO-openni* ros-$ROS_DISTRO-gazebo-ros-control
+sudo apt-get -y install ros-$ROS_DISTRO-desktop-full 
+sudo apt-get -y install ros-$ROS_DISTRO-moveit-* 
+sudo apt-get -y install ros-$ROS_DISTRO-ros-control* 
+sudo apt-get -y install ros-$ROS_DISTRO-control* 
+sudo apt-get -y install python-rosinstall python-pip 
+sudo apt-get -y install ros-$ROS_DISTRO-openni* 
+sudo apt-get -y install ros-$ROS_DISTRO-gazebo-ros-control
 
 if [ $(lsb_release -cs) == "precise" ]; then sudo apt-get install -y gazebo ;fi
 if [ $(lsb_release -cs) == "trusty" ]; then sudo apt-get install -y gazebo2 ;fi
