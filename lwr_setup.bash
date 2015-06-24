@@ -115,6 +115,7 @@ git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
 git clone https://github.com/kuka-isir/rtt_ros_kdl_tools
 git clone --recursive https://github.com/kuka-isir/rtt_lwr
 git clone https://github.com/kuka-isir/rtt_lwr_controllers
+git clone https://github.com/kuka-isir/lwr_project_creator
 git clone https://github.com/ahoarau/rtt_gazebo
 
 wget https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h
