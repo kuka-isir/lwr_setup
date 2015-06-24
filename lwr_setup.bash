@@ -6,7 +6,7 @@ echo 'Upgrades'
 #sudo apt-get -y dist-upgrade
 
 echo 'OpenSSH'
-sudo apt-get install -y openssh-server openssh-client sshfs
+#sudo apt-get install -y openssh-server openssh-client sshfs
 
 echo 'OmniORB'
 sudo apt-get install -y omniorb*
@@ -16,11 +16,11 @@ sudo apt-get remove -y mongodb mongodb-10gen
 sudo apt-get install -y mongodb-clients mongodb-server -o Dpkg::Options::="--force-confdef"
 
 echo 'Htop'
-sudo apt-get install -y htop
+#sudo apt-get install -y htop
 
 echo 'NTP'
-sudo apt-get install -y ntp
-sudo service ntp restart
+#sudo apt-get install -y ntp
+#sudo service ntp restart
 
 echo 'Terminator'
 sudo apt-get -y install terminator
@@ -28,18 +28,18 @@ sudo apt-get -y install terminator
 gconftool --type string --set /desktop/gnome/applications/terminal/exec terminator
 
 echo 'Chrome'
-sudo apt-get -y install libxss1 libappindicator1 libindicator7
-wget -nc https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo dpkg -i google-chrome*.deb
+#sudo apt-get -y install libxss1 libappindicator1 libindicator7
+#wget -nc https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+#sudo dpkg -i google-chrome*.deb
 
 echo 'Various IDES'
-sudo apt-get -y install qtcreator kdevelop spyder eclipse
+#sudo apt-get -y install qtcreator kdevelop spyder eclipse
 
 echo 'Atom'
-wget https://atom.io/download/deb
-sudo dpkg -i deb
+#wget https://atom.io/download/deb
+#sudo dpkg -i deb
 
-sudo apt-get -f -y install
+#sudo apt-get -f -y install
 
 ## ROS Hydro
 ROS_DISTRO=indigo
