@@ -90,8 +90,10 @@ git submodule foreach git checkout toolchain-$toolchain_version
 sudo apt-get install -y ruby-configurate
 sudo updatedb
 
-config=$(locate config.h | grep ruby)
+config=$(locate ruby | grep /usr/ | grep /config.h)
+echo "CONFIG RUBY : $config"
 config_dir=${config%ruby/config.h}
+echo "CONFIG RUBY DIR : $config_dir"
 
 catkin_make_isolated --install -DENABLE_CORBA=ON -DCORBA_IMPLEMENTATION=OMNIORB -DRUBY_CONFIG_INCLUDE_DIR=$config_dir
 
