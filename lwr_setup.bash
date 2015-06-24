@@ -39,6 +39,8 @@ echo 'Atom'
 wget https://atom.io/download/deb
 sudo dpkg -i deb
 
+sudo apt-get -f -y install
+
 ## ROS Hydro
 ROS_DISTRO=indigo
 if [ $(lsb_release -cs) == "precise" ]; then ROS_DISTRO=hydro ;fi
