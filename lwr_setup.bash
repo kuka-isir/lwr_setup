@@ -66,6 +66,10 @@ sudo apt-get -y install ros-$ROS_DISTRO-openni*
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo*
 sudo apt-get -y install ros-$ROS_DISTRO-metaruby
 
+wget -O /tmp/gazebo6_install.sh http://osrf-distributions.s3.amazonaws.com/gazebo/gazebo6_install.sh; sudo sh /tmp/gazebo6_install.sh
+
+sudo apt-get -y install --reinstall python-catkin-pkg
+
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
 ## Rosdep
