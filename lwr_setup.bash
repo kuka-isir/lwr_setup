@@ -5,12 +5,12 @@ if [ ! -n "$TRAVIS" ]; then
  sudo apt-get update
  sudo apt-get -y upgrade
  sudo apt-get -y dist-upgrade
-;fi
+fi
 
 if [ ! -n "$TRAVIS" ]; then
  echo 'OpenSSH'
  sudo apt-get install -y openssh-server openssh-client sshfs
-;fi
+fi
 
 if [ -n "$TRAVIS" ]; then
 echo 'OmniORB'
@@ -19,7 +19,7 @@ sudo apt-get install -y omniorb*
 echo 'Moveit hack'
 sudo apt-get remove -y mongodb mongodb-10gen
 sudo apt-get install -y mongodb-clients mongodb-server -o Dpkg::Options::="--force-confdef"
-;fi
+fi
 
 if [ ! -n "$TRAVIS" ]; then
  echo 'Htop'
@@ -46,7 +46,7 @@ if [ ! -n "$TRAVIS" ]; then
 
  echo 'Resolving issues'
  sudo apt-get -f -y install
-fi;
+fi
 
 ## ROS 
 ROS_DISTRO=indigo
@@ -115,7 +115,7 @@ catkin_make_isolated --install -DENABLE_CORBA=ON -DCORBA_IMPLEMENTATION=OMNIORB 
 
 source $OROCOS_WS/install_isolated/setup.sh
 
-;fi
+fi
 
 cd $EXT_WS/src
 catkin_init_workspace
@@ -127,7 +127,7 @@ git clone https://github.com/jbohren/conman.git
 if [ -n "$XENOMAI" ]; then
 git clone https://github.com/orocos/rtt_geometry.git
 git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
-fi;
+fi
 
 cd $LWR_WS/src
 catkin_init_workspace
