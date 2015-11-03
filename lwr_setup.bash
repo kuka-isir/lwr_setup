@@ -57,24 +57,24 @@ if [ $(lsb_release -cs) == "vivid" ]; then ROS_DISTRO=jade ;fi
 sudo sh -c "echo 'deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main' > /etc/apt/sources.list.d/ros-latest.list"
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt-get update
-sudo apt-get -y install ros-$ROS_DISTRO-desktop-full 
+sudo apt-get -y install ros-$ROS_DISTRO-base
 sudo apt-get -y install ros-$ROS_DISTRO-moveit-* 
 sudo apt-get -y install ros-$ROS_DISTRO-ros-control* 
 sudo apt-get -y install ros-$ROS_DISTRO-control* 
 sudo apt-get -y install python-rosinstall python-pip 
 sudo apt-get -y install ros-$ROS_DISTRO-openni* 
-sudo apt-get -y install ros-$ROS_DISTRO-gazebo*
 sudo apt-get -y install ros-$ROS_DISTRO-metaruby
 
 wget -O /tmp/gazebo6_install.sh http://osrf-distributions.s3.amazonaws.com/gazebo/gazebo6_install.sh; sudo sh /tmp/gazebo6_install.sh
-
-sudo apt-get -y install --reinstall python-catkin-pkg
 
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
 ## Rosdep
 sudo rosdep init
 rosdep update
+
+sudo apt-get -y install --reinstall python-catkin-pkg
+
 
 ROS_WS=~/ros_ws
 
@@ -119,6 +119,8 @@ catkin_make_isolated --install -DENABLE_CORBA=ON -DCORBA_IMPLEMENTATION=OMNIORB 
 
 source $OROCOS_WS/install_isolated/setup.sh
 
+else
+sudo apt-get -y install ros-$ROS_DISTRO-rtt*
 fi
 
 cd $EXT_WS/src
