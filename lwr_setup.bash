@@ -68,7 +68,11 @@ sudo apt-get -y install ros-$ROS_DISTRO-metaruby
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 sudo apt-get update
-sudo apt-get -y install ros-$ROS_DISTRO-gazebo6*
+
+sudo apt-get -y install gazebo6
+# For developers that work on top of Gazebo, one extra package
+sudo apt-get -y install libgazebo6-dev
+sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
 
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
