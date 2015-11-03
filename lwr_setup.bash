@@ -65,7 +65,10 @@ sudo apt-get -y install python-rosinstall python-pip
 sudo apt-get -y install ros-$ROS_DISTRO-openni* 
 sudo apt-get -y install ros-$ROS_DISTRO-metaruby
 
-wget -O /tmp/gazebo6_install.sh http://osrf-distributions.s3.amazonaws.com/gazebo/gazebo6_install.sh; sudo sh /tmp/gazebo6_install.sh
+sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get -y install ros-$ROS_DISTRO-gazebo6*
 
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
