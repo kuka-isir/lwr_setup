@@ -12,15 +12,6 @@ if [ ! -n "$TRAVIS" ]; then
  sudo apt-get install -y openssh-server openssh-client sshfs
 fi
 
-if [ -n "$TRAVIS" ]; then
-echo 'OmniORB'
-sudo apt-get install -y omniorb*
-
-echo 'Moveit hack'
-sudo apt-get remove -y mongodb mongodb-10gen
-sudo apt-get install -y mongodb-clients mongodb-server -o Dpkg::Options::="--force-confdef"
-fi
-
 if [ ! -n "$TRAVIS" ]; then
  echo 'Htop'
  sudo apt-get install -y htop
@@ -80,9 +71,6 @@ source /opt/ros/$ROS_DISTRO/setup.bash
 sudo rosdep init
 rosdep update
 
-sudo apt-get -y install --reinstall python-catkin-pkg
-
-
 ROS_WS=~/ros_ws
 
 LWR_WS=$ROS_WS/lwr_ws
@@ -131,7 +119,6 @@ sudo apt-get -y install ros-$ROS_DISTRO-rtt*
 fi
 
 cd $EXT_WS/src
-catkin_init_workspace
 
 git clone https://github.com/jbohren/rqt_dot.git
 git clone https://github.com/jhu-lcsr/rtt_ros_control.git
@@ -143,7 +130,6 @@ git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
 fi
 
 cd $LWR_WS/src
-catkin_init_workspace
 
 git clone https://github.com/kuka-isir/rtt_ros_kdl_tools
 git clone --recursive https://github.com/kuka-isir/rtt_lwr
@@ -155,22 +141,27 @@ git clone https://github.com/kuka-isir/lwr_project_creator
 git clone https://github.com/ahoarau/rtt_gazebo
 
 cd $LWR_CONTROLLERS_WS/src
-catkin_init_workspace
 
 git clone https://github.com/kuka-isir/rtt_lwr_controllers
 
 
 echo 'COMPILING'
 
-cd $EXT_WS
+cd $EXT_WS/src
+catkin_init_workspace
+cd ..
 catkin_make -DCATKIN_ENABLE_TESTING=OFF
 source devel/setup.sh
 
-cd $LWR_WS
+cd $LWR_WS/src
+catkin_init_workspace
+cd ..
 catkin_make
 source devel/setup.sh
 
-cd $LWR_CONTROLLERS_WS
+cd $LWR_CONTROLLERS_WS/src
+catkin_init_workspace
+cd ..
 catkin_make
 source devel/setup.sh
 
