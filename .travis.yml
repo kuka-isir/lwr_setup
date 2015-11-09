@@ -14,9 +14,11 @@ env:
     - LWR_WS=$ROS_WS/lwr_ws
     - LWR_CONTROLLERS_WS=$ROS_WS/lwr_controllers_ws
     - EXT_WS=$ROS_WS/ext_ws
+    - ROS_DISTRO=indigo
   
 before_install:
   - bash lwr_setup.bash
+  - source /opt/ros/$ROS_DISTRO/setup.bash
   - echo 'COMPILING'
   - cd $EXT_WS/src
   - catkin_init_workspace
