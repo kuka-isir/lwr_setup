@@ -2,12 +2,8 @@ sudo: required
 
 dist: trusty
 
-language: python
+language: generic
 
-python:
-  - "2.7"
-  - "3.3"
-  
 env:
   global:
     - ROS_WS=~/ros_ws
@@ -18,28 +14,6 @@ env:
   
 before_install:
   - bash lwr_setup.bash
-  - source /opt/ros/$ROS_DISTRO/setup.bash
-  - echo 'COMPILING'
-  - cd $EXT_WS/src
-  - catkin_init_workspace
-  - cd ..
-  - catkin_make -DCATKIN_ENABLE_TESTING=OFF
-  - source devel/setup.sh
-  
-  - cd $LWR_WS/src
-  - catkin_init_workspace
-  - cd ..
-  - catkin_make
-  - source devel/setup.sh
-  
-  - cd $LWR_CONTROLLERS_WS/src
-  - catkin_init_workspace
-  - cd ..
-  - catkin_make
-  - source devel/setup.sh
-  
-  - echo 'source $LWR_CONTROLLERS_WS/devel/setup.bash' >> ~/.bashrc
-  - source ~/.bashrc
   
 script:
   - roscd rtt_lwr_controllers
