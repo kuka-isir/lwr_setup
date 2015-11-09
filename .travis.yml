@@ -16,4 +16,5 @@ before_install:
   - bash lwr_setup.bash
   
 script:
+  - source $LWR_CONTROLLERS_WS/devel/setup.sh
   - roscd rtt_lwr_controllers
