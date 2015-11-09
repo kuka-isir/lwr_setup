@@ -48,13 +48,8 @@ if [ $(lsb_release -cs) == "vivid" ]; then ROS_DISTRO=jade ;fi
 sudo sh -c "echo 'deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main' > /etc/apt/sources.list.d/ros-latest.list"
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt-get update
-sudo apt-get -y install ros-$ROS_DISTRO-base
-sudo apt-get -y install ros-$ROS_DISTRO-moveit-* 
-sudo apt-get -y install ros-$ROS_DISTRO-ros-control* 
-sudo apt-get -y install ros-$ROS_DISTRO-control* 
-sudo apt-get -y install python-rosinstall python-pip 
-sudo apt-get -y install ros-$ROS_DISTRO-openni* 
-sudo apt-get -y install ros-$ROS_DISTRO-metaruby
+sudo apt-get install -qq -y python-rosdep python-catkin-tools
+sudo apt-get install -qq -y ros-$CI_ROS_DISTRO-catkin ros-$CI_ROS_DISTRO-ros
 
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
@@ -114,7 +109,8 @@ catkin_make_isolated --install -DENABLE_CORBA=ON -DCORBA_IMPLEMENTATION=OMNIORB 
 
 source $OROCOS_WS/install_isolated/setup.sh
 
-else
+elsesudo apt-get install -qq -y python-rosdep python-catkin-tools
+sudo apt-get install -qq -y ros-$CI_ROS_DISTRO-catkin ros-$CI_ROS_DISTRO-ros
 sudo apt-get -y install ros-$ROS_DISTRO-rtt*
 fi
 
@@ -144,3 +140,30 @@ cd $LWR_CONTROLLERS_WS/src
 
 git clone https://github.com/kuka-isir/rtt_lwr_controllers
 
+
+cd $EXT_WS
+catkin init
+rosdep install -r --from-paths $EXT_WS/ --rosdistro $ROS_DISTRO -y
+
+
+cd $LWR_WS
+catkin init
+rosdep install -r --from-paths $LWR_WS/ --rosdistro $ROS_DISTRO -y
+
+
+cd $LWR_CONTROLLERS_WS
+catkin init
+rosdep install -r --from-paths $LWR_CONTROLLERS_WS/ --rosdistro $ROS_DISTRO -y
+
+
+cd $EXT_WS/src
+catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
+source ../devel/setup.sh
+
+cd $LWR_WS/src
+catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
+source ../devel/setup.sh
+
+cd $LWR_CONTROLLERS_WS/src
+catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
+source ../devel/setup.sh
