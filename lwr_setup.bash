@@ -144,26 +144,3 @@ cd $LWR_CONTROLLERS_WS/src
 
 git clone https://github.com/kuka-isir/rtt_lwr_controllers
 
-
-echo 'COMPILING'
-
-cd $EXT_WS/src
-catkin_init_workspace
-cd ..
-catkin_make -DCATKIN_ENABLE_TESTING=OFF
-source devel/setup.sh
-
-cd $LWR_WS/src
-catkin_init_workspace
-cd ..
-catkin_make
-source devel/setup.sh
-
-cd $LWR_CONTROLLERS_WS/src
-catkin_init_workspace
-cd ..
-catkin_make
-source devel/setup.sh
-
-echo 'source $LWR_CONTROLLERS_WS/devel/setup.bash' >> ~/.bashrc
-source ~/.bashrc
