@@ -8,6 +8,12 @@ python:
   - "2.7"
   - "3.3"
   
+env:
+  - ROS_WS=~/ros_ws
+  - LWR_WS=$ROS_WS/lwr_ws
+  - LWR_CONTROLLERS_WS=$ROS_WS/lwr_controllers_ws
+  - EXT_WS=$ROS_WS/ext_ws
+  
 before_install:
   - bash lwr_setup.bash
   - echo 'COMPILING'
