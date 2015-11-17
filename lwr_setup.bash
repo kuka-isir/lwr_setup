@@ -55,6 +55,7 @@ sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `ls
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 sudo apt-get update
 
+sudo apt-get -y install libsdformat3 sdformat-sdf
 sudo apt-get -y install gazebo6
 # For developers that work on top of Gazebo, one extra package
 sudo apt-get -y install libgazebo6-dev
