@@ -49,7 +49,7 @@ sudo sh -c "echo 'deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install -qq -y python-rosdep python-catkin-tools
-sudo apt-get install -qq -y ros-$CI_ROS_DISTRO-catkin ros-$CI_ROS_DISTRO-ros
+sudo apt-get install -qq -y ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros
 
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
