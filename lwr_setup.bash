@@ -110,8 +110,6 @@ catkin_make_isolated --install -DENABLE_CORBA=ON -DCORBA_IMPLEMENTATION=OMNIORB 
 
 source $OROCOS_WS/install_isolated/setup.sh
 
-elsesudo apt-get install -qq -y python-rosdep python-catkin-tools
-sudo apt-get install -qq -y ros-$CI_ROS_DISTRO-catkin ros-$CI_ROS_DISTRO-ros
 sudo apt-get -y install ros-$ROS_DISTRO-rtt*
 fi
 
