@@ -90,7 +90,7 @@ cd $OROCOS_WS/srcgit clone https://github.com/jbohren/conman.git
 toolchain_version=2.8
 if [ $ROS_DISTRO == "hydro" ]; then toolchain_version=2.7 ;fi
 if [ $ROS_DISTRO == "indigo" ]; then toolchain_version=2.8 ;fi
-if [ $ROS_DISTRO ==git clone https://github.com/jbohren/conman.git "jade" ]; then toolchain_version=2.8 ;fi
+if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.8 ;fi
 
 git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain_version src/orocos/orocos_toolchain
 ## Get the very last updates (might be unstable)
