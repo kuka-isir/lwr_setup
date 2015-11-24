@@ -5,14 +5,9 @@ if [ ! -n "$TRAVIS" ]; then
  sudo apt-get update
  sudo apt-get -y upgrade
  sudo apt-get -y dist-upgrade
-fi
 
-if [ ! -n "$TRAVIS" ]; then
  echo 'OpenSSH'
  sudo apt-get install -y openssh-server openssh-client sshfs
-fi
-
-if [ ! -n "$TRAVIS" ]; then
  echo 'Htop'
  sudo apt-get install -y htop
 
@@ -51,65 +46,65 @@ sudo apt-get update
 sudo apt-get install -qq -y python-rosdep python-catkin-tools
 sudo apt-get install -qq -y ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros
 
+if [ ! -n "$TRAVIS" ];then
+	sudo apt-get install -y -qq ros-$ROS_DISTRO-rtt ros-$ROS_DISTRO-rtt-*
+fi
+
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
 ## Rosdep
 sudo rosdep init
 rosdep update
 
-ROS_WS=~/ros_ws
+ROS_WS=~/ros_workspaces
 
 LWR_WS=$ROS_WS/lwr_ws
-LWR_CONTROLLERS_WS=$ROS_WS/lwr_controllers_ws
-EXT_WS=$ROS_WS/ext_ws
 
 mkdir -p $LWR_WS/src
-mkdir -p $LWR_CONTROLLERS_WS/src
-mkdir -p $EXT_WS/src
 
-cd $EXT_WS/src
+cd $LWR_WS/src
 
 git clone https://github.com/jbohren/rqt_dot.git
 git clone https://github.com/jhu-lcsr/rtt_ros_control.git
 git clone https://github.com/jbohren/conman.git
 
 if [ -n "$XENOMAI" ]; then
-git clone https://github.com/orocos/rtt_geometry.git
-git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
+
+	git clone https://github.com/orocos/rtt_geometry.git
+	git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
+
+	# OROCOS from sources
+	toolchain_version=2.8
+	if [ $ROS_DISTRO == "hydro" ]; then toolchain_version=2.7 ;fi
+	if [ $ROS_DISTRO == "indigo" ]; then toolchain_version=2.8 ;fi
+	if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.8 ;fi
+
+	git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain_version
+	cd orocos_toolchain
+	git submodule foreach git pull
+	git submodule foreach git checkout toolchain-$toolchain_version
+
+
 fi
 
-cd $LWR_WS/src
 
-git clone https://github.com/kuka-isir/rtt_ros_kdl_tools
-git clone --recursive https://github.com/kuka-isir/rtt_lwr
+cd $LWR_WS
+catkin init
+
+cd $LWR_WS/src
+wstool init
+curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/scripts/.rosinstall | wstool merge -
+wstool update -j2
 
 wget https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h
 mv friComm.h $LWR_WS/src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
-
-git clone https://github.com/kuka-isir/lwr_project_creator
-git clone https://github.com/ahoarau/rtt_gazebo
-git clone https://github.com/kuka-isir/lwr_project_creator.git
-
-cd $LWR_CONTROLLERS_WS/src
-
-git clone https://github.com/kuka-isir/rtt_lwr_controllers
-
-
-cd $EXT_WS
-catkin init
-rosdep install -r --from-paths $EXT_WS/ --rosdistro $ROS_DISTRO -y
-
 
 cd $LWR_WS
 catkin init
 rosdep install -r --from-paths $LWR_WS/ --rosdistro $ROS_DISTRO -y
 
 
-cd $LWR_CONTROLLERS_WS
-catkin init
-rosdep install -r --from-paths $LWR_CONTROLLERS_WS/ --rosdistro $ROS_DISTRO -y
-
-####################################### INSTALL GAZEBO 6
+######### INSTALL GAZEBO 6 ###############################################
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 sudo apt-get update
@@ -119,30 +114,14 @@ sudo apt-get -y install gazebo6
 # For developers that work on top of Gazebo, one extra package
 sudo apt-get -y install libgazebo6-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
+#########################################################################
 
-##### Build all the packages
-if [ -n "$TRAVIS" ]; then
-    cd $EXT_WS/src
-    catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-    source ../devel/setup.sh
-    
+if [ -n "$TRAVIS" ]; then 
     cd $LWR_WS/src
-    catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-    source ../devel/setup.sh
-    
-    cd $LWR_CONTROLLERS_WS/src
     catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
     source ../devel/setup.sh
 else
-    cd $EXT_WS/src
-    catkin build -DCATKIN_ENABLE_TESTING=OFF
-    source ../devel/setup.sh
-    
     cd $LWR_WS/src
-    catkin build
-    source ../devel/setup.sh
-    
-    cd $LWR_CONTROLLERS_WS/src
     catkin build
     source ../devel/setup.sh
 fi
