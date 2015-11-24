@@ -135,4 +135,13 @@ sudo apt-get -y install gazebo6
 sudo apt-get -y install libgazebo6-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
 
+cd $EXT_WS
+catkin build -v
 
+
+cd $LWR_WS
+catkin build -v
+
+
+cd $LWR_CONTROLLERS_WS
+catkin build -v
