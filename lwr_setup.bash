@@ -121,7 +121,7 @@ sudo apt-get -y install libgazebo6-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
 
 ##### Build all the packages
-if [ ! -n "$TRAVIS" ]; then
+if [ -n "$TRAVIS" ]; then
     cd $EXT_WS/src
     catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
     source ../devel/setup.sh
