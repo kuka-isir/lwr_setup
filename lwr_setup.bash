@@ -51,16 +51,6 @@ sudo apt-get update
 sudo apt-get install -qq -y python-rosdep python-catkin-tools
 sudo apt-get install -qq -y ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros
 
-sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-sudo apt-get update
-
-sudo apt-get -y install libsdformat3 sdformat-sdf
-sudo apt-get -y install gazebo6
-# For developers that work on top of Gazebo, one extra package
-sudo apt-get -y install libgazebo6-dev
-sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
-
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
 ## Rosdep
@@ -76,42 +66,6 @@ EXT_WS=$ROS_WS/ext_ws
 mkdir -p $LWR_WS/src
 mkdir -p $LWR_CONTROLLERS_WS/src
 mkdir -p $EXT_WS/src
-
-if [ -n "$XENOMAI" ]; then
-
-echo 'OROCOS INSTALLATION'
-echo 'FOLLOW XENOMAI INSTALLATION FIRST'
-
-OROCOS_WS=$ROS_WS/orocos_ws
-mkdir -p $OROCOS_WS/src
-cd $OROCOS_WS/srcgit clone https://github.com/jbohren/conman.git
-
-# OROCOS from sources
-toolchain_version=2.8
-if [ $ROS_DISTRO == "hydro" ]; then toolchain_version=2.7 ;fi
-if [ $ROS_DISTRO == "indigo" ]; then toolchain_version=2.8 ;fi
-if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.8 ;fi
-
-git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain_version src/orocos/orocos_toolchain
-## Get the very last updates (might be unstable)
-git submodule foreach git pull
-git submodule foreach git checkout toolchain-$toolchain_version
-
-# RUBY WORKAROUND
-sudo apt-get install -y ruby-configurate
-sudo updatedb
-
-config=$(locate ruby | grep /usr/ | grep /config.h)
-echo "CONFIG RUBY : $config"
-config_dir=${config%ruby/config.h}
-echo "CONFIG RUBY DIR : $config_dir"
-
-catkin_make_isolated --install -DENABLE_CORBA=ON -DCORBA_IMPLEMENTATION=OMNIORB -DRUBY_CONFIG_INCLUDE_DIR=$config_dir
-
-source $OROCOS_WS/install_isolated/setup.sh
-
-sudo apt-get -y install ros-$ROS_DISTRO-rtt*
-fi
 
 cd $EXT_WS/src
 
@@ -167,3 +121,18 @@ source ../devel/setup.sh
 cd $LWR_CONTROLLERS_WS/src
 catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
 source ../devel/setup.sh
+
+
+
+####################################### INSTALL GAZEBO 6
+sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+sudo apt-get update
+
+sudo apt-get -y install libsdformat3 sdformat-sdf
+sudo apt-get -y install gazebo6
+# For developers that work on top of Gazebo, one extra package
+sudo apt-get -y install libgazebo6-dev
+sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
+
+
