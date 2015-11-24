@@ -44,7 +44,7 @@ sudo sh -c "echo 'deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install -qq -y python-rosdep python-catkin-tools
-sudo apt-get install -qq -y ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros
+sudo apt-get install -qq -y ros-$ROS_DISTRO-catkin python-wstool
 
 if [ ! -n "$TRAVIS" ];then
 	sudo apt-get install -y -qq ros-$ROS_DISTRO-rtt ros-$ROS_DISTRO-rtt-*
