@@ -110,6 +110,18 @@ catkin init
 rosdep install -r --from-paths $LWR_CONTROLLERS_WS/ --rosdistro $ROS_DISTRO -y
 
 
+####################################### INSTALL GAZEBO 6
+sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+sudo apt-get update
+
+sudo apt-get -y install libsdformat3 sdformat-sdf
+sudo apt-get -y install gazebo6
+# For developers that work on top of Gazebo, one extra package
+sudo apt-get -y install libgazebo6-dev
+sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
+
+##### Build all the packages
 cd $EXT_WS/src
 catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
 source ../devel/setup.sh
@@ -122,26 +134,3 @@ cd $LWR_CONTROLLERS_WS/src
 catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
 source ../devel/setup.sh
 
-
-
-####################################### INSTALL GAZEBO 6
-sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-sudo apt-get update
-
-sudo apt-get -y install libsdformat3 sdformat-sdf
-sudo apt-get -y install gazebo6
-# For developers that work on top of Gazebo, one extra package
-sudo apt-get -y install libgazebo6-dev
-sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
-
-cd $EXT_WS
-catkin build -v
-
-
-cd $LWR_WS
-catkin build -v
-
-
-cd $LWR_CONTROLLERS_WS
-catkin build -v
