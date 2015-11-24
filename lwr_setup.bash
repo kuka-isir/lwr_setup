@@ -109,7 +109,6 @@ cd $LWR_CONTROLLERS_WS
 catkin init
 rosdep install -r --from-paths $LWR_CONTROLLERS_WS/ --rosdistro $ROS_DISTRO -y
 
-
 ####################################### INSTALL GAZEBO 6
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
@@ -122,15 +121,28 @@ sudo apt-get -y install libgazebo6-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
 
 ##### Build all the packages
-cd $EXT_WS/src
-catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-source ../devel/setup.sh
-
-cd $LWR_WS/src
-catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-source ../devel/setup.sh
-
-cd $LWR_CONTROLLERS_WS/src
-catkin build --limit-status-rate 0.1 --no-notify -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-source ../devel/setup.sh
-
+if [ ! -n "$TRAVIS" ]; then
+    cd $EXT_WS/src
+    catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
+    source ../devel/setup.sh
+    
+    cd $LWR_WS/src
+    catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
+    source ../devel/setup.sh
+    
+    cd $LWR_CONTROLLERS_WS/src
+    catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
+    source ../devel/setup.sh
+else
+    cd $EXT_WS/src
+    catkin build -DCATKIN_ENABLE_TESTING=OFF
+    source ../devel/setup.sh
+    
+    cd $LWR_WS/src
+    catkin build
+    source ../devel/setup.sh
+    
+    cd $LWR_CONTROLLERS_WS/src
+    catkin build
+    source ../devel/setup.sh
+fi
