@@ -1,15 +1,8 @@
 #!/usr/bin bash
 
 if [ ! -n "$TRAVIS" ]; then
- echo 'Upgrades'
- sudo apt-get update
- sudo apt-get -y upgrade
- sudo apt-get -y dist-upgrade
-
  echo 'OpenSSH'
  sudo apt-get install -y openssh-server openssh-client sshfs
- echo 'Htop'
- sudo apt-get install -y htop
 
  echo 'NTP'
  sudo apt-get install -y ntp
@@ -18,20 +11,9 @@ if [ ! -n "$TRAVIS" ]; then
  echo 'Terminator'
  sudo apt-get -y install terminator
 
- echo 'Chrome'
- sudo apt-get -y install libxss1 libappindicator1 libindicator7
- wget -nc https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
- sudo dpkg -i google-chrome*.deb
-
  echo 'Various IDES'
- sudo apt-get -y install qtcreator kdevelop spyder eclipse vim
+ sudo apt-get -y install qtcreator kdevelop spyder vim
 
- echo 'Atom'
- wget https://atom.io/download/deb
- sudo dpkg -i deb
-
- echo 'Resolving issues'
- sudo apt-get -f -y install
 fi
 
 ## ROS 
@@ -69,7 +51,6 @@ git clone https://github.com/jhu-lcsr/rtt_ros_control.git
 git clone https://github.com/jbohren/conman.git
 
 if [ -n "$XENOMAI" ]; then
-
 	git clone https://github.com/orocos/rtt_geometry.git
 	git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
 
@@ -83,8 +64,6 @@ if [ -n "$XENOMAI" ]; then
 	cd orocos_toolchain
 	git submodule foreach git pull
 	git submodule foreach git checkout toolchain-$toolchain_version
-
-
 fi
 
 
