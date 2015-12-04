@@ -88,7 +88,6 @@ mv friComm.h $LWR_WS/src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/
 
 git clone https://github.com/kuka-isir/lwr_project_creator
 git clone https://github.com/ahoarau/rtt_gazebo
-git clone https://github.com/kuka-isir/lwr_project_creator.git
 
 cd $LWR_CONTROLLERS_WS/src
 
