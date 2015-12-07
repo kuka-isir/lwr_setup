@@ -72,14 +72,20 @@ catkin init
 
 cd $LWR_WS/src
 wstool init
+## Get the installation script
 curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/scripts/.rosinstall | wstool merge -
-wstool update -j2
+## Download source
+if [ -n "$TRAVIS" ];then
+	wstool update -j2
+else
+	wstool update -j$(nproc)
+fi
 
-wget https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h
-mv friComm.h $LWR_WS/src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
+curl https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h >> $LWR_WS/src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
 
 cd $LWR_WS
 catkin init
+## Warning this installs gazebo 2 (default in ros indigo, so please run this before installing gazebo 6 (below))
 rosdep install -r --from-paths $LWR_WS/ --rosdistro $ROS_DISTRO -y
 
 
