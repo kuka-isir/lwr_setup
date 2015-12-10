@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+sudo apt-get install -y -qq curl
 
 ## ROS 
 ROS_DISTRO=indigo
