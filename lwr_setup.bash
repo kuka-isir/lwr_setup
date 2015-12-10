@@ -1,20 +1,5 @@
-#!/usr/bin bash
+#!/usr/bin/env bash
 
-if [ ! -n "$TRAVIS" ]; then
- echo 'OpenSSH'
- sudo apt-get install -y openssh-server openssh-client sshfs
-
- echo 'NTP'
- sudo apt-get install -y ntp
- sudo service ntp restart
-
- echo 'Terminator'
- sudo apt-get -y install terminator
-
- echo 'Various IDES'
- sudo apt-get -y install qtcreator kdevelop spyder vim
-
-fi
 
 ## ROS 
 ROS_DISTRO=indigo
