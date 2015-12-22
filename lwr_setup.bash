@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+	#!/usr/bin/env bash
 sudo apt-get update
 sudo apt-get install -y -qq curl
 
@@ -14,10 +14,6 @@ sudo apt-get update
 sudo apt-get install -qq -y python-rosdep python-catkin-tools
 sudo apt-get install -qq -y ros-$ROS_DISTRO-catkin python-wstool
 
-if [ ! -n "$TRAVIS" ];then
-	sudo apt-get install -y -qq ros-$ROS_DISTRO-rtt ros-$ROS_DISTRO-rtt-*
-fi
-
 #ROS
 source /opt/ros/$ROS_DISTRO/setup.bash
 ## Rosdep
@@ -32,10 +28,6 @@ mkdir -p $LWR_WS/src
 
 cd $LWR_WS/src
 
-git clone https://github.com/jbohren/rqt_dot.git
-git clone https://github.com/jhu-lcsr/rtt_ros_control.git
-git clone https://github.com/jbohren/conman.git
-
 if [ -n "$XENOMAI" ]; then
 	git clone https://github.com/orocos/rtt_geometry.git
 	git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
@@ -44,7 +36,7 @@ if [ -n "$XENOMAI" ]; then
 	toolchain_version=2.8
 	if [ $ROS_DISTRO == "hydro" ]; then toolchain_version=2.7 ;fi
 	if [ $ROS_DISTRO == "indigo" ]; then toolchain_version=2.8 ;fi
-	if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.8 ;fi
+	if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.9 ;fi
 
 	git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain_version
 	cd orocos_toolchain
@@ -56,10 +48,18 @@ fi
 cd $LWR_WS
 catkin init
 
+# This is necessary for the mqueue transport 
+catkin install
+
 cd $LWR_WS/src
 wstool init
 ## Get the installation script
-curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/scripts/.rosinstall | wstool merge -
+curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/config/rtt_lwr.rosinstall | wstool merge -
+
+if [ -n "$RTT_LWR_EXTRAS" ]; then
+	curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/config/rtt_lwr_extras.rosinstall | wstool merg$
+fi
+
 ## Download source
 if [ -n "$TRAVIS" ];then
 	wstool update -j2
@@ -69,8 +69,6 @@ fi
 
 curl https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h >> $LWR_WS/src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
 
-cd $LWR_WS
-catkin init
 ## Warning this installs gazebo 2 (default in ros indigo, so please run this before installing gazebo 6 (below))
 rosdep install -r --from-paths $LWR_WS/ --rosdistro $ROS_DISTRO -y
 
@@ -87,12 +85,16 @@ sudo apt-get -y install libgazebo6-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
 #########################################################################
 
+
+
+# Build everything
+
 if [ -n "$TRAVIS" ]; then 
     cd $LWR_WS/src
     catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-    source ../devel/setup.sh
+    source ../install/setup.sh
 else
     cd $LWR_WS/src
-    catkin build
-    source ../devel/setup.sh
+    catkin build -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
+    source ../install/setup.sh
 fi
