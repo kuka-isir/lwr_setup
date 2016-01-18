@@ -5,7 +5,10 @@ dist: trusty
 language: generic
 
 env:
-  - RTT_LWR_EXTRAS=1	
+  - RTT_LWR_EXTRAS=ON GAZEBO6=OFF
+  - RTT_LWR_EXTRAS=ON GAZEBO6=ON
   
 script:
-  - bash lwr_setup.bash
+  - . lwr_setup.bash
+  - rospack profile
+  - roscd rtt_lwr
