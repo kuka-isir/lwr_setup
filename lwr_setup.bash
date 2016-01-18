@@ -1,4 +1,5 @@
-	#!/usr/bin/env bash
+#!/usr/bin/env bash
+
 sudo apt-get update
 sudo apt-get install -y -qq curl
 
@@ -20,30 +21,20 @@ source /opt/ros/$ROS_DISTRO/setup.bash
 sudo rosdep init
 rosdep update
 
+
+##### Creating user directories
+if [ ! -n "$ROS_WS" ]; then
 ROS_WS=/home/$USER
-
-LWR_WS=$ROS_WS/lwr_ws
-
-mkdir -p $LWR_WS/src
-
-cd $LWR_WS/src
-
-if [ -n "$XENOMAI" ]; then
-	git clone https://github.com/orocos/rtt_geometry.git
-	git clone https://github.com/orocos/rtt_ros_integration -b $ROS_DISTRO-devel
-
-	# OROCOS from sources
-	toolchain_version=2.8
-	if [ $ROS_DISTRO == "hydro" ]; then toolchain_version=2.7 ;fi
-	if [ $ROS_DISTRO == "indigo" ]; then toolchain_version=2.8 ;fi
-	if [ $ROS_DISTRO == "jade" ]; then toolchain_version=2.9 ;fi
-
-	git clone --recursive https://github.com/orocos-toolchain/orocos_toolchain.git -b toolchain-$toolchain_version
-	cd orocos_toolchain
-	git submodule foreach git pull
-	git submodule foreach git checkout toolchain-$toolchain_version
 fi
 
+if [ ! -n "$LWR_WS" ]; then
+LWR_WS=$ROS_WS/lwr_ws
+fi
+
+mkdir -p $LWR_WS/src
+#################################
+
+cd $LWR_WS/src
 
 cd $LWR_WS
 catkin init
@@ -74,6 +65,7 @@ rosdep install -r --from-paths $LWR_WS/ --rosdistro $ROS_DISTRO -y
 
 
 ######### INSTALL GAZEBO 6 ###############################################
+if [ -n "$GAZEBO6" ]; then
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 sudo apt-get update
@@ -83,18 +75,16 @@ sudo apt-get -y install gazebo6
 # For developers that work on top of Gazebo, one extra package
 sudo apt-get -y install libgazebo6-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
+fi
 #########################################################################
 
 
 
 # Build everything
-
+cd $LWR_WS/src
 if [ -n "$TRAVIS" ]; then 
-    cd $LWR_WS/src
     catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
-    source ../install/setup.sh
 else
-    cd $LWR_WS/src
     catkin build -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
-    source ../install/setup.sh
 fi
+source $LWR_WS/install/setup.sh
