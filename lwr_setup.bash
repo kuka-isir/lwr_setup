@@ -70,7 +70,6 @@ fi
 curl https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h >> $LWR_WS/src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
 
 cd $LWR_WS
-catkin init
 ## Warning this installs gazebo 2 (default in ros indigo, so please run this before installing gazebo 6 (below))
 rosdep install -r --from-paths $LWR_WS/ --rosdistro $ROS_DISTRO -y
 
