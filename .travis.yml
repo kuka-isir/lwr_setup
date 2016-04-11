@@ -7,7 +7,7 @@ language: generic
 env:
   - RTT_LWR_EXTRAS=ON GAZEBO6=OFF
   - RTT_LWR_EXTRAS=ON GAZEBO6=ON
-  
+  - RTT_LWR_EXTRAS=ON GAZEBO7=ON
 script:
   - . lwr_setup.bash
   - rospack profile
