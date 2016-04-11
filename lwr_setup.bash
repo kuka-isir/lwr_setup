@@ -24,11 +24,11 @@ rosdep update
 
 ##### Creating user directories
 if [ ! -n "$ROS_WS" ]; then
-ROS_WS=/home/$USER
+	ROS_WS=/home/$USER
 fi
 
 if [ ! -n "$LWR_WS" ]; then
-LWR_WS=$ROS_WS/lwr_ws
+	LWR_WS=$ROS_WS/lwr_ws
 fi
 
 mkdir -p $LWR_WS/src
@@ -39,17 +39,11 @@ cd $LWR_WS/src
 cd $LWR_WS
 catkin init
 
-# This is necessary for the mqueue transport 
-catkin install
-
 cd $LWR_WS/src
 wstool init
-## Get the installation script
-curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/config/rtt_lwr.rosinstall | wstool merge -
 
-if [ -n "$RTT_LWR_EXTRAS" ]; then
-	curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/master/lwr_scripts/config/rtt_lwr_extras.rosinstall | wstool merg$
-fi
+curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr.rosinstall | wstool merge -
+https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr_extras.rosinstall | wstool merge -
 
 ## Download source
 if [ -n "$TRAVIS" ];then
@@ -78,6 +72,20 @@ sudo apt-get -y install ros-$ROS_DISTRO-gazebo6-*
 fi
 #########################################################################
 
+######### INSTALL GAZEBO 7 ###############################################
+if [ -n "$GAZEBO7" ]; then
+sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+sudo apt-get update
+
+sudo apt-get -y install libsdformat4 sdformat-sdf
+sudo apt-get -y install gazebo7
+# For developers that work on top of Gazebo, one extra package
+sudo apt-get -y install libgazebo7-dev
+sudo apt-get -y install ros-$ROS_DISTRO-gazebo7-*
+fi
+#########################################################################
+
 
 
 # Build everything
@@ -87,4 +95,5 @@ if [ -n "$TRAVIS" ]; then
 else
     catkin build -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
 fi
-source $LWR_WS/install/setup.sh
+
+source $LWR_WS/devel/setup.sh
