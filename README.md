@@ -24,8 +24,7 @@ sudo apt-get -y upgrade
 ```
 ##### Installation script
 ```bash
-wget https://raw.githubusercontent.com/kuka-isir/lwr_setup/2.0/lwr_setup.bash
-bash lwr_setup.bash
+curl https://raw.githubusercontent.com/kuka-isir/lwr_setup/2.0/lwr_setup.bash | bash
 # Come back in 20min
 ```
 
