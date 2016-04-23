@@ -9,7 +9,7 @@ env:
   - RTT_LWR_EXTRAS=ON GAZEBO6=ON
   - RTT_LWR_EXTRAS=ON GAZEBO7=ON
 script:
-  - export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+  - export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
   - . lwr_setup.bash
   - rospack profile
   - roscd rtt_lwr
