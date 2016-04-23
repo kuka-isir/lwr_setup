@@ -4,8 +4,14 @@ dist: trusty
 
 language: generic
 
+rvm:
+  - 1.9.3
+compiler:
+  - gcc
+  
 env:
-  - RTT_LWR_EXTRAS=ON GAZEBO6=OFF
+  - RAW=ON
+  - RTT_LWR_EXTRAS=ON
   - RTT_LWR_EXTRAS=ON GAZEBO6=ON
   - RTT_LWR_EXTRAS=ON GAZEBO7=ON
 script:
