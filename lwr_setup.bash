@@ -43,7 +43,7 @@ cd $LWR_WS/src
 wstool init
 
 curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr.rosinstall | wstool merge -
-https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr_extras.rosinstall | wstool merge -
+curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr_extras.rosinstall | wstool merge -
 
 ## Download source
 if [ -n "$TRAVIS" ];then
