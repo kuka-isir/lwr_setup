@@ -43,15 +43,15 @@ case $i in
     shift
     ;;
     --orocos=*)
-    setBoolean orocos="${i#*=}"
+    setBoolean orocos "${i#*=}"
     shift
     ;;
     --orocos29=*)
-    setBoolean orocos29="${i#*=}"
+    setBoolean orocos29 "${i#*=}"
     shift
     ;;
     --gazebo=*)
-    setBoolean gazebo="${i#*=}"
+    setBoolean gazebo "${i#*=}"
     shift
     ;;
     --gazebo_version=*)
@@ -59,15 +59,15 @@ case $i in
     shift
     ;;
     --rtt_lwr=*)
-    setBoolean rtt_lwr="${i#*=}"
+    setBoolean rtt_lwr "${i#*=}"
     shift
     ;;
     --rtt_lwr_extras=*)
-    setBoolean rtt_lwr_extras="${i#*=}"
+    setBoolean rtt_lwr_extras "${i#*=}"
     shift
     ;;
     --conman=*)
-    setBoolean conman="${i#*=}"
+    setBoolean conman "${i#*=}"
     shift
     ;;
     --default)
