@@ -133,6 +133,7 @@ if [[ $rtt_lwr ]]; then
     rosrun rtt_roscomm create_rtt_msgs control_msgs
     rosrun rtt_roscomm create_rtt_msgs controller_manager_msgs
     curl https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h >> $ws_src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
+    rosdep install -r --from-paths $ws_src/ --rosdistro $ROS_DISTRO -y
     catkin build
     source $ws_path/devel/setup.bash
 fi
