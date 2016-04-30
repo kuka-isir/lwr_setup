@@ -4,19 +4,27 @@ dist: trusty
 
 language: generic
 
-rvm:
-  - 1.9.3
-compiler:
-  - gcc
-  
 env:
-  - RAW=ON
-  - RTT_LWR_EXTRAS=ON
-  - RTT_LWR_EXTRAS=ON GAZEBO6=ON
-  - RTT_LWR_EXTRAS=ON GAZEBO7=ON
+  - ROS_DISTRO=indigo OROCOS29=FALSE GAZEBO_VERSION="" CONMAN=FALSE
+  - ROS_DISTRO=indigo OROCOS29=FALSE GAZEBO_VERSION="" CONMAN=TRUE
+
+  - ROS_DISTRO=indigo OROCOS29=FALSE GAZEBO_VERSION="7" CONMAN=FALSE
+  - ROS_DISTRO=indigo OROCOS29=FALSE GAZEBO_VERSION="7" CONMAN=TRUE
+
+  - ROS_DISTRO=jade OROCOS29=FALSE GAZEBO_VERSION="7" CONMAN=FALSE
+  - ROS_DISTRO=jade OROCOS29=FALSE GAZEBO_VERSION="7" CONMAN=TRUE
+
+  - ROS_DISTRO=indigo OROCOS29=TRUE GAZEBO_VERSION="7" CONMAN=FALSE
+  - ROS_DISTRO=indigo OROCOS29=TRUE GAZEBO_VERSION="7" CONMAN=TRUE
+
+matrix:
+  allow_failures:
+    - env: ROS_DISTRO=indigo OROCOS29=TRUE GAZEBO_VERSION="7" CONMAN=TRUE
+
 script:
   - export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
-  - . lwr_setup.bash
+  - chmod +x lwr_setup.bash
+  - ./lwr_setup.bash --ros=TRUE --ROS_DISTRO=$ROS_DISTRO --orocos=TRUE --orocos29=$OROCOS29 --gazebo=TRUE --gazebo_version=$GAZEBO_VERSION --rtt_lwr=TRUE --rtt_lwr_extras=TRUE --conman=$CONMAN --ws_path=$HOME/lwr_ws 
   - source ~/lwr_ws/devel/setup.bash
   - rospack profile
   - roscd rtt_lwr
