@@ -55,7 +55,7 @@ case $i in
     shift
     ;;
     --gazebo_version=*)
-    setBoolean gazebo_version="${i#*=}"
+    gazebo_version="${i#*=}"
     shift
     ;;
     --rtt_lwr=*)
