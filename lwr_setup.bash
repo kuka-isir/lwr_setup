@@ -3,7 +3,7 @@
 sudo apt-get update
 sudo apt-get install -y -qq curl
 
-## ROS 
+## ROS
 ROS_DISTRO=indigo
 if [ $(lsb_release -cs) == "precise" ]; then ROS_DISTRO=hydro ;fi
 if [ $(lsb_release -cs) == "trusty" ]; then ROS_DISTRO=indigo ;fi
@@ -73,7 +73,7 @@ fi
 #########################################################################
 
 ######### INSTALL GAZEBO 7 ###############################################
-if [ -n "$GAZEBO7" ]; then
+
 sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
 wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 sudo apt-get update
@@ -83,14 +83,14 @@ sudo apt-get -y install gazebo7
 # For developers that work on top of Gazebo, one extra package
 sudo apt-get -y install libgazebo7-dev
 sudo apt-get -y install ros-$ROS_DISTRO-gazebo7-*
-fi
+
 #########################################################################
 
 
 
 # Build everything
 cd $LWR_WS/src
-if [ -n "$TRAVIS" ]; then 
+if [ -n "$TRAVIS" ]; then
     catkin build --limit-status-rate 0.1 --no-notify --no-status -j2 -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug
 else
     catkin build -DCATKIN_ENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
