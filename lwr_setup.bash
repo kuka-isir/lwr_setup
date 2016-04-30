@@ -80,7 +80,7 @@ case $i in
 esac
 done
 
-if [[ $ros ]] ; then
+if  $ros  ; then
     echo "Installing ROS Indigo" $ros
     sudo sh -c "echo 'deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main' > /etc/apt/sources.list.d/ros-latest.list"
     wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
@@ -92,7 +92,7 @@ if [[ $ros ]] ; then
     rosdep update
 fi
 
-if [[ $orocos ]] ; then
+if  $orocos  ; then
     echo "Installting OROCOS 2.8 from debians"
     sudo apt-get install ros-$ROS_DISTRO-orocos-toolchain ros-$ROS_DISTRO-rtt-*
 elif $orocos29 ; then
@@ -108,11 +108,11 @@ elif $orocos29 ; then
     source $HOME/orocos_ws/install/setup.bash
 fi
 
-if [[ $gazebo ]]; then
+if  $gazebo ; then
     sudo apt-get install -y ros-$ROS_DISTRO-gazebo$gazebo_version-*
 fi
 
-if [[ $rtt_lwr ]]; then
+if  $rtt_lwr ; then
     sudo apt-get install -y curl
     mkdir -p $ws_src
     cd ~/lwr_ws/
@@ -121,11 +121,11 @@ if [[ $rtt_lwr ]]; then
     wstool init
     curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr.rosinstall | wstool merge -
 
-    if [[ $rtt_lwr_extras ]]; then
+    if  $rtt_lwr_extras ; then
         curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/rtt_lwr_extras.rosinstall | wstool merge -
     fi
 
-    if [[ $conman ]]; then
+    if  $conman ; then
         curl https://raw.githubusercontent.com/kuka-isir/rtt_lwr/rtt_lwr-2.0/lwr_utils/config/conman.rosinstall | wstool merge -
     fi
 
