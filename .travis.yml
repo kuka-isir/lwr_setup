@@ -17,5 +17,6 @@ env:
 script:
   - export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
   - . lwr_setup.bash
+  - source ~/lwr_ws/devel/setup.bash
   - rospack profile
   - roscd rtt_lwr
