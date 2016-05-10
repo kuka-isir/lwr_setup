@@ -94,14 +94,14 @@ fi
 
 if  $orocos  ; then
     echo "Installting OROCOS 2.8 from debians"
-    sudo apt-get install ros-$ROS_DISTRO-orocos-toolchain ros-$ROS_DISTRO-rtt-*
+    sudo apt-get install -y -qq ros-$ROS_DISTRO-orocos-toolchain ros-$ROS_DISTRO-rtt-*
 elif $orocos29 ; then
     echo "Installting OROCOS 2.9 from source"
     mkdir -p $HOME/orocos_ws/src
     cd $HOME/orocos_ws
     catkin init
     catkin config --install
-    sudo apt-get install -y git
+    sudo apt-get install -y -qq git
     cd $HOME/orocos_ws/src
     git clone https://github.com/orocos-toolchain/orocos_toolchain.git --recursive -b toolchain-2.9
     catkin build
@@ -109,11 +109,11 @@ elif $orocos29 ; then
 fi
 
 if  $gazebo ; then
-    sudo apt-get install -y ros-$ROS_DISTRO-gazebo$gazebo_version-*
+    sudo apt-get install -y -qq ros-$ROS_DISTRO-gazebo$gazebo_version-*
 fi
 
 if  $rtt_lwr ; then
-    sudo apt-get install -y curl
+    sudo apt-get install -y -qq curl
     mkdir -p $ws_src
     cd ~/lwr_ws/
     catkin init
@@ -134,6 +134,6 @@ if  $rtt_lwr ; then
     rosrun rtt_roscomm create_rtt_msgs controller_manager_msgs
     curl https://raw.githubusercontent.com/IDSCETHZurich/re_trajectory-generator/master/kuka_IK/include/friComm.h >> $ws_src/rtt_lwr/lwr_hardware/kuka_lwr_fri/include/kuka_lwr_fri/friComm.h
     rosdep install -r --from-paths $ws_src/ --rosdistro $ROS_DISTRO -y
-    catkin build
+    catkin build --no-status
     source $ws_path/devel/setup.bash
 fi
